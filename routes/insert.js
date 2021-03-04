@@ -11,36 +11,37 @@ router.post('/room', async (req, res) => {
     /**
      * Checks if data has elements.
      */
-    switch(true) {
-        case !req.data.key:
-            res.sendStatus(400);
-            return
-        case !req.data.city:
-            res.sendStatus(400);
-            return
-        case !req.data.state:
-            res.sendStatus(400);
-            return
-        case !req.data.state_id:
-            res.sendStatus(400);
-            return
-        case !req.data.county:
-            res.sendStatus(400);
-            return
-        case !req.data.state_id:
-            res.sendStatus(400);
-            return
-        case !req.data.lat:
-            res.sendStatus(400);
-            return
-        case !req.data.lng:
-            res.sendStatus(400);
-            return
-    }
 
-    
-    if(!req.data.key) {
-        res.send('Please enter a key')
+    if(!req.data.key){
+        res.sendStatus(400);
+        return
+    }
+    if(!req.data.city){
+        res.sendStatus(400);
+        return
+    }
+    if(!req.data.state){
+        res.sendStatus(400);
+        return
+    }
+    if(!req.data.state_id){
+        res.sendStatus(400);
+        return
+    }
+    if(!req.data.county){
+        res.sendStatus(400);
+        return
+    }
+    if(!req.data.zip_codes){
+        res.sendStatus(400);
+        return
+    }
+    if(!req.data.lat){
+        res.sendStatus(400);
+        return
+    }
+    if(!req.data.lng){
+        res.sendStatus(400);
         return
     }
 
@@ -49,17 +50,15 @@ router.post('/room', async (req, res) => {
         return
     }
 
-    console.log("Cities in file: " + citiesData.length);
     const payload = [
-        city.city.toLowerCase(),
-        city.state_name.toLowerCase(),
-        city.state_id.toLowerCase(),
-        city.county.toLowerCase(), 
-        city.zip_codes,
-        city.lat,
-        city.lng
+        req.data.city.toLowerCase(),
+        req.data.state_name.toLowerCase(),
+        req.data.state_id.toLowerCase(),
+        req.data.county.toLowerCase(), 
+        req.data.zip_codes,
+        req.data.lat,
+        req.data.lng
     ]   
-
     try {
         const queryCode = 'INSERT INTO cities(city, state, state_id, county, zip_codes, lat, lng) VALUES(s, s, s, s, s, s, s)'
         await db.query(queryCode, payload);
