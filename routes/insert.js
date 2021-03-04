@@ -5,15 +5,19 @@ require('dotenv').config()
 
 const db = require('../db');
 
-router.post('/rooms', (req, res) => {
+router.post('/rooms', async (req, res) => {
     if(!req.data.key) {
         res.send('Please enter a key')
         return
     }
 
-    if(req.data.key !== process.env.SECRET_KEY)
+    if(req.data.key !== process.env.SECRET_KEY) {
+        res.send('Incorrect key')
+        return
+    }
 
-    const citiesData = require('../usCities.json');
+    let citiesData = require('../usCities.json');
+
     console.log("Cities in file: " + citiesData.length);
     let payload = []
     let msg = ''
@@ -43,3 +47,5 @@ router.post('/rooms', (req, res) => {
     }
 
 });
+
+module.exports = router
