@@ -6,7 +6,7 @@ const cors = require('cors');
 
 
 //City data from https://simplemaps.com/data/us-cities
-mongoose.connect(`mongodb+srv://admin:${process.env.MONGO_PWD}@ariaslabs-west.bawjw.mongodb.net/weathertrack?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use(cors());
 
@@ -17,4 +17,4 @@ const routes = require('./routes');
 
 app.use('/api/v1', routes);
 
-app.listen(port, () => console.log(`Listening on port localhost:${port}`))
+app.listen(port, () => console.log(`Listening on port http://localhost:${port}`))
