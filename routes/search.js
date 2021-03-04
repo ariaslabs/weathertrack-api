@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const City = require('../models/City')
-const cors = require('cors');
-
-router.use(cors());
 
 router.get('/', async(req, res) => {
 

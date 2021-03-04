@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const City = require('../models/City')
+const { Client } = require('pg');
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
 
 router.get('/', async(req, res) => {
 
