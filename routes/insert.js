@@ -5,7 +5,40 @@ require('dotenv').config()
 
 const db = require('../db');
 
-router.post('/rooms', async (req, res) => {
+router.post('/room', async (req, res) => {
+
+    let status;
+    /**
+     * Checks if data has elements.
+     */
+    switch(true) {
+        case !req.data.key:
+            res.sendStatus(400);
+            return
+        case !req.data.city:
+            res.sendStatus(400);
+            return
+        case !req.data.state:
+            res.sendStatus(400);
+            return
+        case !req.data.state_id:
+            res.sendStatus(400);
+            return
+        case !req.data.county:
+            res.sendStatus(400);
+            return
+        case !req.data.state_id:
+            res.sendStatus(400);
+            return
+        case !req.data.lat:
+            res.sendStatus(400);
+            return
+        case !req.data.lng:
+            res.sendStatus(400);
+            return
+    }
+
+    
     if(!req.data.key) {
         res.send('Please enter a key')
         return
@@ -16,36 +49,28 @@ router.post('/rooms', async (req, res) => {
         return
     }
 
-    let citiesData = require('../usCities.json');
-
     console.log("Cities in file: " + citiesData.length);
-    let payload = []
-    let msg = ''
+    const payload = [
+        city.city.toLowerCase(),
+        city.state_name.toLowerCase(),
+        city.state_id.toLowerCase(),
+        city.county.toLowerCase(), 
+        city.zip_codes,
+        city.lat,
+        city.lng
+    ]   
 
     try {
-        for(var city of citiesData) {
-            payload.push([
-                city.city.toLowerCase(),
-                city.state_name.toLowerCase(),
-                city.state_id.toLowerCase(),
-                city.county_name.toLowerCase(),
-                city.zips.toString().split(" "),
-                city.lat,
-                city.lng
-            ])   
-        }
-        const queryCode = 'INSERT INTO cities(city, state, state_id, county, zip_codes, lat, lng) VALUES($1,$2,$3,$4,$5,$6) RETURNING city_id'
-        const formatted = format(queryCode, payload)
-        await db.query(formatted);
-        msg = 'success'
+        const queryCode = 'INSERT INTO cities(city, state, state_id, county, zip_codes, lat, lng) VALUES(s, s, s, s, s, s, s)'
+        await db.query(queryCode, payload);
+        status = 200
     } catch(err) {
         await pool.query('ROLLBACK')
-        msg = 'Proccess broke'
+        status = 500
     } finally {
         await pool.end()
-        res.send(msg);
+        res.sendStatus(status);
     }
-
 });
 
 module.exports = router
