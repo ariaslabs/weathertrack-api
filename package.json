@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node . "
+    "start": "npm i && node ."
   },
   "repository": {
     "type": "git",
