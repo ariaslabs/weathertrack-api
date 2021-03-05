@@ -6,68 +6,70 @@ require('dotenv').config()
 const db = require('../db');
 
 router.post('/room', async (req, res) => {
-    console.log(req)
+    console.log(req.data);
+    console.log(req.body);
     let status;
     /**
      * Checks if data has elements.
      */
 
-    if(!req.data.key){
+    if(!req.body.key){
         res.sendStatus(400);
         return
     }
-    if(!req.data.city){
+    if(!req.body.city){
         res.sendStatus(400);
         return
     }
-    if(!req.data.state){
+    if(!req.body.state){
         res.sendStatus(400);
         return
     }
-    if(!req.data.state_id){
+    if(!req.body.state_id){
         res.sendStatus(400);
         return
     }
-    if(!req.data.county){
+    if(!req.body.county){
         res.sendStatus(400);
         return
     }
-    if(!req.data.zip_codes){
+    if(!req.body.zip_codes){
         res.sendStatus(400);
         return
     }
-    if(!req.data.lat){
+    if(!req.body.lat){
         res.sendStatus(400);
         return
     }
-    if(!req.data.lng){
+    if(!req.body.lng){
         res.sendStatus(400);
         return
     }
 
-    if(req.data.key !== process.env.SECRET_KEY) {
+    if(req.body.key !== process.env.SECRET_KEY) {
         res.send('Incorrect key')
         return
     }
 
+    console.log("made it pass this")
+
     const payload = [
-        req.data.city.toLowerCase(),
-        req.data.state_name.toLowerCase(),
-        req.data.state_id.toLowerCase(),
-        req.data.county.toLowerCase(), 
-        req.data.zip_codes,
-        req.data.lat,
-        req.data.lng
+        req.body.city,
+        req.body.state_name,
+        req.body.state_id,
+        req.body.county, 
+        req.body.zip_codes,
+        req.body.lat,
+        req.body.lng
     ]   
     try {
         const queryCode = 'INSERT INTO cities(city, state, state_id, county, zip_codes, lat, lng) VALUES(s, s, s, s, s, s, s)'
         await db.query(queryCode, payload);
         status = 200
     } catch(err) {
-        await pool.query('ROLLBACK')
+        console.log(err)
         status = 500
     } finally {
-        await pool.end()
         res.sendStatus(status);
     }
 });
