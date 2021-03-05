@@ -6,7 +6,7 @@ require('dotenv').config()
 const db = require('../db');
 
 router.post('/room', async (req, res) => {
-
+    console.log(req)
     let status;
     /**
      * Checks if data has elements.
